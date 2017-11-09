@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Formatting;
 using System.Web.Http;
 
 namespace CoelhoRapido_WebAPI
@@ -10,7 +12,7 @@ namespace CoelhoRapido_WebAPI
         public static void Register(HttpConfiguration config)
         {
             // Serviços e configuração da API da Web
-
+            
             // Rotas da API da Web
             config.MapHttpAttributeRoutes();
 
@@ -19,6 +21,12 @@ namespace CoelhoRapido_WebAPI
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
+
+            var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
+            jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            jsonFormatter.Indent = true;
         }
     }
 }

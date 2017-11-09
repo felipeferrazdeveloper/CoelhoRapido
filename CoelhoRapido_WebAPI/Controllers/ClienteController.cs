@@ -7,21 +7,46 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-
 namespace CoelhoRapido_WebAPI.Controllers
 {
-    [RoutePrefix("api/cliente")]
+    
     public class ClienteController : ApiController
     {
-        private static List<Cliente> listaClientes = new List<Cliente>();
-
-        [AcceptVerbs("POST")]
-        [Route("CadastrarCliente")]
-        public IList<Cliente> CadastrarCliente(Cliente cliente)
+        // GET: api/Cliente
+        public IEnumerable<Cliente> Get()
         {
             var list = DBConfig.Instance.RepositoryCliente.FindAll();
             return list;
         }
 
+        // GET: api/Cliente/5
+        public Cliente Get(Guid id)
+        {
+            return DBConfig.Instance.RepositoryCliente.FindById(id);
+        }
+
+        // POST: api/Cliente
+        public void Post()
+        {
+            var c = new Cliente()
+            {
+                Name = "Zezim",
+                Password = "!@#!@#",
+                User = "Ze"
+            };
+            DBConfig.Instance.RepositoryCliente.Salvar(c);
+        }
+
+        // PUT: api/Cliente/5
+        public void Put(int id, [FromBody]string value)
+        {
+        }
+
+        // DELETE: api/Cliente/5
+        public void Delete(Guid id)
+        {
+            Cliente c = DBConfig.Instance.RepositoryCliente.FindById(id);
+            DBConfig.Instance.RepositoryCliente.Deletar(c);
+        }
     }
 }

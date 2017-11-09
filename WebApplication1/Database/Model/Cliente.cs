@@ -7,11 +7,11 @@ namespace CoelhoRapido.Model.Database.Model
 {
     public class Cliente
     {
-        public Guid Id { get; set; }
-        public String Name { get; set; }
-        public String User { get; set; }
-        public String Password { get; set; }
-        public IList<Endereco> Enderecos { get; set; }
+        public virtual Guid Id { get; set; }
+        public virtual String Name { get; set; }
+        public virtual String User { get; set; }
+        public virtual String Password { get; set; }
+        public virtual IList<Endereco> Enderecos { get; set; }
     }
 
     public class ClienteMap : ClassMapping<Cliente>
@@ -23,7 +23,14 @@ namespace CoelhoRapido.Model.Database.Model
             Property(x => x.User);
             Property(x => x.Password);
 
-            //Enderecos é um relacionamento n -> n um cliente pode ter n endereços e o mesmo endereço pode pertencer a n clientes
+            Bag<Endereco>(x => x.Enderecos, m =>
+            {
+                m.Cascade(Cascade.All);
+                m.Key(k => k.Column("idCliente"));
+                m.Lazy(CollectionLazy.NoLazy);
+                m.Inverse(true);
+            },
+            r => r.OneToMany());
         }
     }
 }

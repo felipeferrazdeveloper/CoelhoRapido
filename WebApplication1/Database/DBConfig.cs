@@ -8,6 +8,8 @@ using NHibernate.Mapping.ByCode;
 using System;
 using System.Web;
 using CoelhoRapido.Model.Database.Repository;
+using CoelhoRapido.Model.Database.Model;
+using System.Reflection;
 
 namespace CoelhoRapido.Model.Database
 {
@@ -54,10 +56,10 @@ namespace CoelhoRapido.Model.Database
                 var iniFile = IniUtils.LerArquivoIni();
 
                 var stringConexao = "Persist Security Info=True;"
-                                    + "server=" + iniFile["DbConfig"]["host"] + ";"
+                                    + "server=" + iniFile["DbConfig"]["server"] + ";"
                                     + "port=" + iniFile["DbConfig"]["port"] + ";"
-                                    + "database=" + iniFile["DbConfig"]["db"] + ";"
-                                    + "uid=" + iniFile["DbConfig"]["user"] + ";"
+                                    + "database=" + iniFile["DbConfig"]["database"] + ";"
+                                    + "uid=" + iniFile["DbConfig"]["uid"] + ";"
                                     + "pwd=" + iniFile["DbConfig"]["pwd"];
 
                 var mysql = new MySqlConnection(stringConexao);
@@ -134,9 +136,9 @@ namespace CoelhoRapido.Model.Database
             {
                 var modelMapper = new ModelMapper();
 
-                //modelMapper.AddMappings(
+                modelMapper.AddMappings(
 
-                //Assembly.GetAssembly(typeof(InstituicaoMap)).GetTypes());
+                Assembly.GetAssembly(typeof(ClienteMap)).GetTypes());
 
                 return modelMapper.CompileMappingForAllExplicitlyAddedEntities();
             }

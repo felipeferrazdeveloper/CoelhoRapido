@@ -9,13 +9,14 @@ namespace CoelhoRapido.Model.Database.Model
 {
     public class Volume
     {
-        public Guid Id { get; set; }
-        public String Descricao { get; set; }
-        public Double ValorDeclarado { get; set; }
-        public Double Peso { get; set; }
-        public Double Altura { get; set; }
-        public Double Largura { get; set; }
-        public Double Profundidade { get; set; }
+        public virtual Guid Id { get; set; }
+        public virtual String Descricao { get; set; }
+        public virtual Double ValorDeclarado { get; set; }
+        public virtual Double Peso { get; set; }
+        public virtual Double Altura { get; set; }
+        public virtual Double Largura { get; set; }
+        public virtual Double Profundidade { get; set; }
+        public virtual Entrega Entrega { get; set; }
         
     }
 
@@ -30,6 +31,12 @@ namespace CoelhoRapido.Model.Database.Model
             Property(x => x.Altura);
             Property(x => x.Largura);
             Property(x => x.Profundidade);
+
+            ManyToOne(x => x.Entrega, m =>
+            {
+                m.Column("idEntrega");
+            });
+
         }
     }
 }
